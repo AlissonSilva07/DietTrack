@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.edu.diettrack.presentation.navigation.AuthScaffold
+import com.edu.diettrack.presentation.ui.screens.LoginScreen
 import com.edu.diettrack.presentation.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                AuthScaffold()
+                AuthScaffold {
+                    LoginScreen()
+                }
             }
         }
     }
@@ -32,7 +35,7 @@ fun LoginPreview() {
         dynamicColor = false,
         darkTheme = false
     ) {
-        AuthScaffold()
+        LoginScreen()
     }
 }
 
@@ -43,6 +46,6 @@ fun LoginPreviewDark() {
         dynamicColor = false,
         darkTheme = true
     ) {
-        AuthScaffold()
+        LoginScreen()
     }
 }
