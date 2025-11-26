@@ -19,8 +19,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                AuthScaffold {
-                    LoginScreen()
+                AuthScaffold { modifier ->
+                    LoginScreen(modifier = modifier)
                 }
             }
         }
@@ -35,7 +35,9 @@ fun LoginPreview() {
         dynamicColor = false,
         darkTheme = false
     ) {
-        LoginScreen()
+        AuthScaffold { modifier ->
+            LoginScreen(modifier = modifier)
+        }
     }
 }
 
@@ -46,6 +48,8 @@ fun LoginPreviewDark() {
         dynamicColor = false,
         darkTheme = true
     ) {
-        LoginScreen()
+        AuthScaffold { modifier ->
+            LoginScreen(modifier = modifier)
+        }
     }
 }

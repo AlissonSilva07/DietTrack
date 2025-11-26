@@ -74,7 +74,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         )
         AppPasswordField(
-            state = emailText,
+            state = senhaText,
             placeholder = "Insira sua senha",
             icon = R.drawable.lock_24px,
             modifier = Modifier.fillMaxWidth()
