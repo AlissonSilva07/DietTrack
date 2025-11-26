@@ -1,4 +1,4 @@
-package com.edu.diettrack.ui.theme
+package com.edu.diettrack.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
