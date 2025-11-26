@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.edu.diettrack" />
+                  <option name="mobileSdkAppId" value="1:28538385123:android:32438b3aaea1e4e7f5cbd6" />
+                  <option name="projectId" value="diet-track-34bbc" />
+                  <option name="projectNumber" value="28538385123" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

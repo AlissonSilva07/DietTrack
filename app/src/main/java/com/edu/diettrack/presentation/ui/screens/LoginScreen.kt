@@ -1,6 +1,7 @@
 package com.edu.diettrack.presentation.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,13 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.edu.diettrack.R
@@ -33,9 +31,14 @@ import com.edu.diettrack.presentation.components.AppPasswordField
 import com.edu.diettrack.presentation.components.AppTextField
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToSignUp: () -> Unit,
+) {
     val isDarkTheme = isSystemInDarkTheme()
     val logo = if (isDarkTheme) R.drawable.logo_white else R.drawable.logo_black
+
+    val signUpTag = "sign_up"
 
     val termosString = buildAnnotatedString {
         append("Ao continuar, você concorda com nossos ")
@@ -50,15 +53,17 @@ fun LoginScreen(modifier: Modifier = Modifier) {
     }
 
     val cadastroString = buildAnnotatedString {
-        append("Já tem uma conta? ")
-        withLink(
-            LinkAnnotation.Url(
-                "Faça Login",
-                TextLinkStyles(style = SpanStyle(fontWeight = FontWeight.Bold)),
-            )
-        ) {
+        append("Ainda não tem uma conta? ")
+
+        pushStringAnnotation(
+            tag = signUpTag,
+            annotation = "navigate_to_sign_up"
+        )
+        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
             append("Crie uma conta")
         }
+        pop()
+
         append(".")
     }
 
@@ -119,7 +124,8 @@ fun LoginScreen(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.secondary,
             text = cadastroString,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.clickable(onClick = onNavigateToSignUp)
         )
     }
 }

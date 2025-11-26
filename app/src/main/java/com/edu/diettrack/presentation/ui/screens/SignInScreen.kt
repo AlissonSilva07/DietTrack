@@ -1,6 +1,7 @@
 package com.edu.diettrack.presentation.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +37,10 @@ import com.edu.diettrack.presentation.navigation.AuthScaffold
 import com.edu.diettrack.presentation.ui.theme.AppTheme
 
 @Composable
-fun SignInScreen(modifier: Modifier = Modifier) {
+fun SignInScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToLogin: () -> Unit
+) {
     val isDarkTheme = isSystemInDarkTheme()
     val logo = if (isDarkTheme) R.drawable.logo_white else R.drawable.logo_black
 
@@ -129,7 +133,8 @@ fun SignInScreen(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.secondary,
             text = loginString,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.clickable(onClick = onNavigateToLogin)
         )
     }
 }
@@ -142,7 +147,10 @@ private fun SignInPreview() {
         dynamicColor = false
     ) {
         AuthScaffold { modifier ->
-            SignInScreen(modifier = modifier)
+            SignInScreen(
+                modifier = modifier,
+                onNavigateToLogin = {}
+            )
         }
     }
 }
@@ -155,7 +163,10 @@ private fun SignInPreviewDark() {
         dynamicColor = false
     ) {
         AuthScaffold { modifier ->
-            SignInScreen(modifier = modifier)
+            SignInScreen(
+                modifier = modifier,
+                onNavigateToLogin = {}
+            )
         }
     }
 }
