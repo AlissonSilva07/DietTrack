@@ -7,8 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.edu.diettrack.presentation.navigation.AuthScaffold
 import com.edu.diettrack.presentation.ui.screens.LoginScreen
 import com.edu.diettrack.presentation.ui.theme.AppTheme
@@ -23,33 +21,6 @@ class MainActivity : ComponentActivity() {
                     LoginScreen(modifier = modifier)
                 }
             }
-        }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPreview() {
-    AppTheme(
-        dynamicColor = false,
-        darkTheme = false
-    ) {
-        AuthScaffold { modifier ->
-            LoginScreen(modifier = modifier)
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPreviewDark() {
-    AppTheme(
-        dynamicColor = false,
-        darkTheme = true
-    ) {
-        AuthScaffold { modifier ->
-            LoginScreen(modifier = modifier)
         }
     }
 }

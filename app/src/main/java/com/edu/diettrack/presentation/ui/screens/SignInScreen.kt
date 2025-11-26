@@ -27,13 +27,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.edu.diettrack.R
 import com.edu.diettrack.presentation.components.AppPasswordField
 import com.edu.diettrack.presentation.components.AppTextField
+import com.edu.diettrack.presentation.navigation.AuthScaffold
+import com.edu.diettrack.presentation.ui.theme.AppTheme
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun SignInScreen(modifier: Modifier = Modifier) {
     val isDarkTheme = isSystemInDarkTheme()
     val logo = if (isDarkTheme) R.drawable.logo_white else R.drawable.logo_black
 
@@ -49,7 +52,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         append(".")
     }
 
-    val cadastroString = buildAnnotatedString {
+    val loginString = buildAnnotatedString {
         append("Já tem uma conta? ")
         withLink(
             LinkAnnotation.Url(
@@ -57,13 +60,14 @@ fun LoginScreen(modifier: Modifier = Modifier) {
                 TextLinkStyles(style = SpanStyle(fontWeight = FontWeight.Bold)),
             )
         ) {
-            append("Crie uma conta")
+            append("Faça Login")
         }
         append(".")
     }
 
     val emailText = rememberTextFieldState()
     val senhaText = rememberTextFieldState()
+    val confirmarSenhaText = rememberTextFieldState()
 
     Column(
         modifier = modifier
@@ -80,7 +84,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         )
         Text(
             style = MaterialTheme.typography.titleLarge,
-            text = "Boas vindas novamente!",
+            text = "Crie uma conta gratuitamente.",
             fontWeight = FontWeight.Bold
         )
         AppTextField(
@@ -91,7 +95,13 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         )
         AppPasswordField(
             state = senhaText,
-            placeholder = "Insira sua senha",
+            placeholder = "Crie uma senha",
+            icon = R.drawable.lock_24px,
+            modifier = Modifier.fillMaxWidth()
+        )
+        AppPasswordField(
+            state = confirmarSenhaText,
+            placeholder = "Repita a sua senha",
             icon = R.drawable.lock_24px,
             modifier = Modifier.fillMaxWidth()
         )
@@ -105,7 +115,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         ) {
             Text(
                 style = MaterialTheme.typography.bodyLarge,
-                text = "Entrar",
+                text = "Cadastrar",
                 fontWeight = FontWeight.Bold
             )
         }
@@ -118,8 +128,34 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         Text(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.secondary,
-            text = cadastroString,
+            text = loginString,
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@Preview
+@Composable
+private fun SignInPreview() {
+    AppTheme(
+        darkTheme = false,
+        dynamicColor = false
+    ) {
+        AuthScaffold { modifier ->
+            SignInScreen(modifier = modifier)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun SignInPreviewDark() {
+    AppTheme(
+        darkTheme = true,
+        dynamicColor = false
+    ) {
+        AuthScaffold { modifier ->
+            SignInScreen(modifier = modifier)
+        }
     }
 }
