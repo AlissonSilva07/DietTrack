@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -28,6 +29,10 @@ fun AppTextField(
     BasicTextField(
         state = state,
         modifier = modifier,
+        textStyle = TextStyle(
+            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize
+        ),
         decorator = { innerTextField ->
             Row(
                 modifier = modifier
@@ -35,7 +40,7 @@ fun AppTextField(
                         MaterialTheme.colorScheme.surface,
                         RoundedCornerShape(8.dp)
                     )
-                    .padding(vertical = 8.dp, horizontal = 16.dp),
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(

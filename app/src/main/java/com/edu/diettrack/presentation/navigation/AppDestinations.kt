@@ -9,6 +9,9 @@ object AuthRoutes
 object MainRoutes
 
 @Serializable
+object Loading
+
+@Serializable
 object Login
 
 @Serializable

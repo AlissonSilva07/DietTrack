@@ -71,4 +71,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.encrypted.datastore.preferences)
 }
