@@ -58,15 +58,9 @@ fun SignInScreen(
 
     val loginString = buildAnnotatedString {
         append("Já tem uma conta? ")
-        withLink(
-            LinkAnnotation.Url(
-                "Faça Login",
-                TextLinkStyles(style = SpanStyle(fontWeight = FontWeight.Bold)),
-            )
-        ) {
-            append("Faça Login")
+        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+            append("Faça Login.")
         }
-        append(".")
     }
 
     val emailText = rememberTextFieldState()
