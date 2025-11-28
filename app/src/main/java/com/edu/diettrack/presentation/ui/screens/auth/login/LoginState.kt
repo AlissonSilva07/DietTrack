@@ -4,7 +4,9 @@ import androidx.compose.foundation.text.input.TextFieldState
 
 data class LoginState(
     val email: TextFieldState = TextFieldState(),
+    val emailError: String? = null,
     val password: TextFieldState = TextFieldState(),
+    val passwordError: String? = null,
     val isLoading: Boolean = false,
-    val error: String = "",
+    val snackbarMessage: String? = null
 )

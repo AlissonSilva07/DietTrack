@@ -63,7 +63,7 @@ fun NavGraphBuilder.authGraph(
     navigation<AuthRoutes>(startDestination = Login) {
 
         composable<Login> {
-            AuthScaffold { modifier ->
+            AuthScaffold { modifier, snackbarHostState ->
                 LoginScreen(
                     modifier = modifier,
                     onNavigateToSignUp = {
@@ -71,13 +71,14 @@ fun NavGraphBuilder.authGraph(
                     },
                     onLoginSuccess = {
                         onAuthenticated()
-                    }
+                    },
+                    snackbarHostState = snackbarHostState
                 )
             }
         }
 
         composable<Signin> {
-            AuthScaffold { modifier ->
+            AuthScaffold { modifier, snackbarHostState ->
                 SignInScreen(
                     modifier = modifier,
                     onNavigateToLogin = { navController.popBackStack() }

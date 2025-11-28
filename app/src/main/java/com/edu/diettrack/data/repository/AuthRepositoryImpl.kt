@@ -80,9 +80,7 @@ class AuthRepositoryImpl @Inject constructor(
                 .signInWithEmailAndPassword(email, password)
                 .await()
 
-            val user = result.user ?: return Resource.Error("Erro ao fazer login")
-
-            Log.i("AUTH", "Firebase login SUCCESS: ${user.uid}")
+            val user = result.user ?: return Resource.Error("Credenciais inválidas.")
 
             authUserDao.saveUser(user.toEntity())
             authStorage.saveUid(user.uid)
@@ -90,8 +88,7 @@ class AuthRepositoryImpl @Inject constructor(
             Resource.Success(user)
 
         } catch (e: Exception) {
-            Log.e("AUTH", "Firebase login ERROR: ${e.message}")
-            Resource.Error("Algo inesperado aconteceu: ${e.message}", e)
+            Resource.Error("Algo inesperado aconteceu! Tente novamente mais tarde.", e)
         }
     }
 

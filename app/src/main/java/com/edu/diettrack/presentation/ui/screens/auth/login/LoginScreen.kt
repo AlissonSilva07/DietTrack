@@ -13,15 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,21 +35,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.edu.diettrack.R
+import com.edu.diettrack.presentation.components.AppButton
 import com.edu.diettrack.presentation.components.AppPasswordField
 import com.edu.diettrack.presentation.components.AppTextField
+import com.edu.diettrack.presentation.components.ButtonVariant
 import com.edu.diettrack.presentation.ui.screens.auth.AuthState
 import com.edu.diettrack.presentation.ui.screens.auth.AuthViewModel
 import com.edu.diettrack.presentation.ui.theme.AppTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     onNavigateToSignUp: () -> Unit,
     onLoginSuccess: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val loginState by viewModel.loginState.collectAsState()
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(state) {
         if (state is AuthState.Success) {
@@ -56,11 +62,23 @@ fun LoginScreen(
         }
     }
 
+    LaunchedEffect(loginState.snackbarMessage) {
+        loginState.snackbarMessage?.let { message ->
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = message,
+                    duration = SnackbarDuration.Short
+                )
+                viewModel.onSnackbarMessageConsumed()
+            }
+        }
+    }
+
     Login(
         modifier = modifier,
         onNavigateToSignUp = onNavigateToSignUp,
         state = loginState,
-        event = viewModel::login
+        event = viewModel::onLoginEvent
     )
 }
 
@@ -69,7 +87,7 @@ fun Login(
     modifier: Modifier = Modifier,
     onNavigateToSignUp: () -> Unit,
     state: LoginState,
-    event: (email: String, password: String) -> Unit
+    event: (LoginEvent) -> Unit
 ) {
     val isDarkTheme = isSystemInDarkTheme()
     val logo = if (isDarkTheme) R.drawable.logo_white else R.drawable.logo_black
@@ -96,7 +114,7 @@ fun Login(
             annotation = "navigate_to_sign_up"
         )
         withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-            append("Crie uma conta")
+            append("Registre-se agora")
         }
         pop()
 
@@ -129,42 +147,40 @@ fun Login(
             fontWeight = FontWeight.Bold
         )
         AppTextField(
+            label = "Email",
             state = state.email,
             placeholder = "Insira seu endereço de email",
             icon = R.drawable.alternate_email_24px,
+            errorText = state.emailError,
             modifier = Modifier.fillMaxWidth()
         )
         AppPasswordField(
+            label = "Senha",
             state = state.password,
             placeholder = "Insira sua senha",
             icon = R.drawable.lock_24px,
+            errorText = state.passwordError,
             modifier = Modifier.fillMaxWidth()
         )
-        Button(
+        AppButton(
+            title = "Entrar",
+            variant = if (state.isLoading) ButtonVariant.DISABLED else ButtonVariant.DEFAULT,
+            disabled = state.isLoading,
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
             onClick = {
-                event(state.email.text.toString(),state.password.text.toString())
+                event(LoginEvent.PerformLogin)
             }
-        ) {
-            Text(
-                style = MaterialTheme.typography.bodyLarge,
-                text = "Entrar",
-                fontWeight = FontWeight.Bold
-            )
-        }
+        )
         Text(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.secondary,
             text = termosString,
             textAlign = TextAlign.Center
         )
+        Spacer(Modifier.weight(1f))
         Text(
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.onBackground,
             text = cadastroString,
             textAlign = TextAlign.Center,
             modifier = Modifier.clickable(onClick = onNavigateToSignUp)
@@ -181,7 +197,7 @@ private fun LoginPreview() {
     ) {
         Login(
             state = LoginState(),
-            event = {} as (email: String, password: String) -> Unit,
+            event = {},
             onNavigateToSignUp = {}
         )
     }
@@ -196,7 +212,7 @@ private fun LoginPreviewDark() {
     ) {
         Login(
             state = LoginState(),
-            event = {} as (email: String, password: String) -> Unit,
+            event = {},
             onNavigateToSignUp = {}
         )
     }

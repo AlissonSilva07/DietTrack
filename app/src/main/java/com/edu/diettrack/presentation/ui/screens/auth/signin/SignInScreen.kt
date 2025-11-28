@@ -91,20 +91,23 @@ fun SignInScreen(
             fontWeight = FontWeight.Bold
         )
         AppTextField(
+            label = "Email",
             state = emailText,
             placeholder = "Insira seu endereço de email",
             icon = R.drawable.alternate_email_24px,
             modifier = Modifier.fillMaxWidth()
         )
         AppPasswordField(
+            label = "Senha",
             state = senhaText,
             placeholder = "Crie uma senha",
             icon = R.drawable.lock_24px,
             modifier = Modifier.fillMaxWidth()
         )
         AppPasswordField(
-            state = confirmarSenhaText,
-            placeholder = "Repita a sua senha",
+            label = "Repetir senha",
+            state = senhaText,
+            placeholder = "Digite sua senha novamente",
             icon = R.drawable.lock_24px,
             modifier = Modifier.fillMaxWidth()
         )
@@ -145,7 +148,7 @@ private fun SignInPreview() {
         darkTheme = false,
         dynamicColor = false
     ) {
-        AuthScaffold { modifier ->
+        AuthScaffold { modifier, snackbarHostState  ->
             SignInScreen(
                 modifier = modifier,
                 onNavigateToLogin = {}
@@ -161,7 +164,7 @@ private fun SignInPreviewDark() {
         darkTheme = true,
         dynamicColor = false
     ) {
-        AuthScaffold { modifier ->
+        AuthScaffold { modifier, snackbarHostState  ->
             SignInScreen(
                 modifier = modifier,
                 onNavigateToLogin = {}
