@@ -9,38 +9,44 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.edu.diettrack.presentation.ui.screens.AuthState
-import com.edu.diettrack.presentation.ui.screens.AuthViewModel
-import com.edu.diettrack.presentation.ui.screens.HomeScreen
-import com.edu.diettrack.presentation.ui.screens.LoginScreen
-import com.edu.diettrack.presentation.ui.screens.SignInScreen
+import com.edu.diettrack.presentation.ui.screens.auth.AuthState
+import com.edu.diettrack.presentation.ui.screens.auth.AuthViewModel
+import com.edu.diettrack.presentation.ui.screens.home.HomeScreen
+import com.edu.diettrack.presentation.ui.screens.auth.login.LoginScreen
+import com.edu.diettrack.presentation.ui.screens.auth.signin.SignInScreen
 
 @Composable
 fun AppNavigation(
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-    val state = authViewModel.state.collectAsState()
+    val authState = authViewModel.state.collectAsState()
 
-    val start = when (state.value) {
-        is AuthState.Loading -> Loading
-        is AuthState.Unauthenticated -> Login
-        is AuthState.Success -> Home
-        else -> {}
+    val startDestination = when (authState.value) {
+        is AuthState.Loading -> AuthRoutes
+        is AuthState.Unauthenticated -> AuthRoutes
+        is AuthState.Success -> MainRoutes
+        is AuthState.Error -> {}
     }
 
     NavHost(
         navController = navController,
-        startDestination = AuthRoutes
+        startDestination = startDestination
     ) {
 
         authGraph(
             navController = navController,
-            onAuthenticated = {}
+            onAuthenticated = {
+                navController.navigate(MainRoutes) {
+                    popUpTo(AuthRoutes) { inclusive = true }
+                }
+            }
         )
 
         mainGraph(
             onLogout = {
+                authViewModel.logout()
+
                 navController.navigate(AuthRoutes) {
                     popUpTo(MainRoutes) { inclusive = true }
                 }
@@ -49,40 +55,47 @@ fun AppNavigation(
     }
 }
 
+
 fun NavGraphBuilder.authGraph(
     navController: NavHostController,
-    onAuthenticated: () -> Unit,
+    onAuthenticated: () -> Unit
 ) {
     navigation<AuthRoutes>(startDestination = Login) {
+
         composable<Login> {
             AuthScaffold { modifier ->
                 LoginScreen(
                     modifier = modifier,
                     onNavigateToSignUp = {
                         navController.navigate(Signin)
+                    },
+                    onLoginSuccess = {
+                        onAuthenticated()
                     }
                 )
             }
         }
+
         composable<Signin> {
             AuthScaffold { modifier ->
                 SignInScreen(
                     modifier = modifier,
-                    onNavigateToLogin = {
-                        navController.popBackStack()
-                    }
+                    onNavigateToLogin = { navController.popBackStack() }
                 )
             }
         }
     }
 }
 
+
 fun NavGraphBuilder.mainGraph(
-    onLogout: () -> Unit,
+    onLogout: () -> Unit
 ) {
     navigation<MainRoutes>(startDestination = Home) {
+
         composable<Home> {
-            HomeScreen()
+            HomeScreen(
+            )
         }
     }
 }

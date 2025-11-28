@@ -1,5 +1,6 @@
 package com.edu.diettrack.data.local
 
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -8,5 +9,4 @@ data class AuthUserEntity(
     @PrimaryKey val uid: String,
     val name: String,
     val email: String,
-    val photoUrl: String
 )
