@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "28538385123",
+    "project_id": "diet-track-34bbc",
+    "storage_bucket": "diet-track-34bbc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28538385123:android:32438b3aaea1e4e7f5cbd6",
+        "android_client_info": {
+          "package_name": "com.edu.diettrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1E5U9ift4g_DvKkrs4cJJQht9Q9YdOEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

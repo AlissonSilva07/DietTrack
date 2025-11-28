@@ -56,7 +56,6 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun signIn(
         email: String,
         password: String
@@ -68,14 +67,12 @@ class AuthRepositoryImpl @Inject constructor(
                 val localUser = authUserDao.getUser()
 
                 if (localUser != null && localUser.email == email) {
-                    Log.i("AUTH", "Offline login success (local user)")
                     return Resource.Success(null)
                 }
 
                 return Resource.Error("Sem internet e nenhum usuário local encontrado")
             }
 
-            Log.i("AUTH", "Calling Firebase signInWithEmailAndPassword...")
             val result = auth
                 .signInWithEmailAndPassword(email, password)
                 .await()
@@ -99,19 +96,18 @@ class AuthRepositoryImpl @Inject constructor(
     ): Resource<FirebaseUser?> {
         return try {
             val isConnected = networkChecker.isConnected.first()
+
             if (!isConnected) {
-                return Resource.Error("Sem internet")
+                val localUser = authUserDao.getUser()
+
+                if (localUser != null && localUser.email == email) {
+                    return Resource.Success(null)
+                }
+
+                return Resource.Error("Sem internet e nenhum usuário local encontrado")
             }
 
             val result = auth.createUserWithEmailAndPassword(email, password).await()
-            val uid = result.user?.uid ?: throw Exception("Falha ao fazer login.")
-
-            val userRef = firestore.collection("users").document(uid)
-            val userData = hashMapOf(
-                "name" to result.user?.displayName,
-                "email" to result.user?.email
-            )
-            userRef.set(userData).await()
             return Resource.Success(result.user)
         } catch (e: Exception) {
             Resource.Error("Algo inesperado aconteceu:", e)

@@ -8,6 +8,8 @@ import com.edu.diettrack.presentation.ui.screens.auth.AuthState.Error
 import com.edu.diettrack.presentation.ui.screens.auth.AuthState.Success
 import com.edu.diettrack.presentation.ui.screens.auth.login.LoginEvent
 import com.edu.diettrack.presentation.ui.screens.auth.login.LoginState
+import com.edu.diettrack.presentation.ui.screens.auth.signin.SignInEvent
+import com.edu.diettrack.presentation.ui.screens.auth.signin.SignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +27,9 @@ class AuthViewModel @Inject constructor(
 
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
+
+    private val _signInState = MutableStateFlow(SignInState())
+    val signInState = _signInState.asStateFlow()
 
     init {
         observeAuthFlow()
@@ -47,37 +52,95 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private fun validateLoginFields(): Boolean {
+    fun onSignInEvent(event: SignInEvent) {
+        when (event) {
+            SignInEvent.PerformSignUp -> signUp()
+        }
+    }
+
+    private fun validateCoreAuthFields(
+        emailText: String,
+        passwordText: String,
+        setEmailError: (String?) -> Unit,
+        setPasswordError: (String?) -> Unit
+    ): Boolean {
         var isValid = true
 
-        _loginState.update {
-            it.copy(
-                emailError = null,
-                passwordError = null
-            )
-        }
-
-        val emailText = _loginState.value.email.text
-        val passwordText = _loginState.value.password.text
-
-
         if (emailText.isBlank()) {
-            _loginState.update { it.copy(emailError = "O email deve ser preenchido.") }
+            setEmailError("O email deve ser preenchido.")
             isValid = false
         } else if (emailText.length < 6) {
-            _loginState.update { it.copy(emailError = "O email deve ter pelo menos 6 caracteres.") }
+            setEmailError("O email deve ter pelo menos 6 caracteres.")
             isValid = false
         } else if (!isValidEmail(emailText)) {
-            _loginState.update { it.copy(emailError = "Insira um email válido.") }
+            setEmailError("Insira um email válido.")
             isValid = false
+        } else {
+            setEmailError(null)
         }
 
         if (passwordText.isBlank()) {
-            _loginState.update { it.copy(passwordError = "A senha deve ser preenchida.") }
+            setPasswordError("A senha deve ser preenchida.")
             isValid = false
         } else if (passwordText.length < 3) {
-            _loginState.update { it.copy(passwordError = "A senha deve ter pelo menos 3 caracteres.") }
+            setPasswordError("A senha deve ter pelo menos 3 caracteres.")
             isValid = false
+        } else {
+            setPasswordError(null)
+        }
+
+        return isValid
+    }
+
+    private fun validateLoginFields(): Boolean {
+        _loginState.update {
+            it.copy(emailError = null, passwordError = null)
+        }
+
+        return validateCoreAuthFields(
+            emailText = _loginState.value.email.text.toString(),
+            passwordText = _loginState.value.password.text.toString(),
+            setEmailError = { error ->
+                _loginState.update { it.copy(emailError = error) }
+            },
+            setPasswordError = { error ->
+                _loginState.update { it.copy(passwordError = error) }
+            }
+        )
+    }
+
+    private fun validateSignInFields(): Boolean {
+        _signInState.update {
+            it.copy(emailError = null, passwordError = null, repeatPasswordError = null)
+        }
+
+        val passwordText = _signInState.value.password.text.toString()
+        val repeatPasswordText = _signInState.value.repeatPassword.text.toString()
+        var isValid = true
+
+        val coreValid = validateCoreAuthFields(
+            emailText = _signInState.value.email.text.toString(),
+            passwordText = passwordText,
+            setEmailError = { error ->
+                _signInState.update { it.copy(emailError = error) }
+            },
+            setPasswordError = { error ->
+                _signInState.update { it.copy(passwordError = error) }
+            }
+        )
+
+        if (!coreValid) {
+            isValid = false
+        }
+
+        if (repeatPasswordText.isBlank()) {
+            _signInState.update { it.copy(repeatPasswordError = "A confirmação deve ser preenchida.") }
+            isValid = false
+        } else if (repeatPasswordText != passwordText) {
+            _signInState.update { it.copy(repeatPasswordError = "As senhas não coincidem.") }
+            isValid = false
+        } else {
+            _signInState.update { it.copy(repeatPasswordError = null) }
         }
 
         return isValid
@@ -122,16 +185,37 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun signUp(email: String, password: String) = viewModelScope.launch {
-        try {
-            _state.value = AuthState.Loading
-            val result = authRepository.signUp(email, password)
-            if (result is Resource.Success) {
-                _state.value = AuthState.Success(result.data)
-            }
-        } catch (e: Exception) {
-            _state.value = AuthState.Error(e.message ?: "Error")
+    fun signUp() = viewModelScope.launch {
+        if (!validateSignInFields()) {
+            _signInState.update { it.copy(isLoading = false) }
+            return@launch
         }
+
+        _signInState.update { it.copy(isLoading = true) }
+
+        val email = _signInState.value.email.text.toString()
+        val password = _signInState.value.password.text.toString()
+
+        when (val result = authRepository.signUp(email, password)) {
+            is Resource.Success -> {
+                _state.value = Success(result.data)
+                _signInState.update { it.copy(isLoading = false) }
+                _signInState.update { it.copy(snackbarMessage = "Sucesso ao registrar a sua conta!") }
+            }
+
+            is Resource.Error -> {
+                _state.value = Error(result.message)
+                _signInState.update {
+                    it.copy(
+                        isLoading = false,
+                        snackbarMessage = result.message
+                    )
+                }
+            }
+
+            is Resource.Loading<*> -> {}
+        }
+        _signInState.update { it.copy(isLoading = false) }
     }
 
     fun logout() = viewModelScope.launch {
@@ -141,5 +225,6 @@ class AuthViewModel @Inject constructor(
 
     fun onSnackbarMessageConsumed() {
         _loginState.update { it.copy(snackbarMessage = null) }
+        _signInState.update { it.copy(snackbarMessage = null) }
     }
 }

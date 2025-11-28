@@ -81,7 +81,8 @@ fun NavGraphBuilder.authGraph(
             AuthScaffold { modifier, snackbarHostState ->
                 SignInScreen(
                     modifier = modifier,
-                    onNavigateToLogin = { navController.popBackStack() }
+                    onNavigateToLogin = { navController.popBackStack() },
+                    snackbarHostState = snackbarHostState
                 )
             }
         }
