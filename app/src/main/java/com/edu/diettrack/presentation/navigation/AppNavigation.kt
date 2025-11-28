@@ -11,9 +11,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.edu.diettrack.presentation.ui.screens.auth.AuthState
 import com.edu.diettrack.presentation.ui.screens.auth.AuthViewModel
-import com.edu.diettrack.presentation.ui.screens.home.HomeScreen
 import com.edu.diettrack.presentation.ui.screens.auth.login.LoginScreen
 import com.edu.diettrack.presentation.ui.screens.auth.signin.SignInScreen
+import com.edu.diettrack.presentation.ui.screens.home.HomeScreen
 
 @Composable
 fun AppNavigation(
@@ -94,8 +94,12 @@ fun NavGraphBuilder.mainGraph(
     navigation<MainRoutes>(startDestination = Home) {
 
         composable<Home> {
-            HomeScreen(
-            )
+            MainScaffold { modifier ->
+                HomeScreen(
+                    modifier = modifier,
+                    onLogout = onLogout
+                )
+            }
         }
     }
 }
