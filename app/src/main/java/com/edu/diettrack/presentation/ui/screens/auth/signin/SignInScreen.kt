@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
@@ -90,7 +89,6 @@ fun SignIn(
     event: (SignInEvent) -> Unit
 ) {
     val isDarkTheme = isSystemInDarkTheme()
-    val logo = if (isDarkTheme) R.drawable.logo_white else R.drawable.logo_black
 
     val termosString = buildAnnotatedString {
         append("Ao continuar, você concorda com nossos ")
@@ -122,18 +120,19 @@ fun SignIn(
         Icon(
             painter = painterResource(id = R.drawable.nutrition_48px),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(48.dp)
         )
         Image(
-            painter = painterResource(logo),
+            painter = painterResource(R.drawable.logo_color),
             contentDescription = null,
             modifier = Modifier.width(180.dp)
         )
         Text(
             style = MaterialTheme.typography.titleLarge,
             text = "Crie uma conta gratuitamente.",
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
         )
         AppTextField(
             label = "Email",

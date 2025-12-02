@@ -51,7 +51,7 @@ fun AppButton(
     }
 
     val contentColor = when (variant) {
-        ButtonVariant.DEFAULT -> MaterialTheme.colorScheme.background
+        ButtonVariant.DEFAULT -> MaterialTheme.colorScheme.onPrimary
         ButtonVariant.DISABLED -> Color.White
         ButtonVariant.MUTED -> MaterialTheme.colorScheme.primary
         ButtonVariant.DESTRUCTIVE -> Color.White

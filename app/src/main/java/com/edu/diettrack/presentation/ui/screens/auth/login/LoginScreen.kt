@@ -90,7 +90,6 @@ fun Login(
     event: (LoginEvent) -> Unit
 ) {
     val isDarkTheme = isSystemInDarkTheme()
-    val logo = if (isDarkTheme) R.drawable.logo_white else R.drawable.logo_black
 
     val signUpTag = "sign_up"
 
@@ -133,18 +132,19 @@ fun Login(
         Icon(
             painter = painterResource(id = R.drawable.nutrition_48px),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(48.dp)
         )
         Image(
-            painter = painterResource(logo),
+            painter = painterResource(R.drawable.logo_color),
             contentDescription = null,
             modifier = Modifier.width(180.dp)
         )
         Text(
             style = MaterialTheme.typography.titleLarge,
             text = "Boas vindas novamente!",
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
         )
         AppTextField(
             label = "Email",

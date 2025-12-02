@@ -19,3 +19,6 @@ object Signin
 
 @Serializable
 object Home
+
+@Serializable
+object Onboarding

@@ -14,6 +14,7 @@ import com.edu.diettrack.presentation.ui.screens.auth.AuthViewModel
 import com.edu.diettrack.presentation.ui.screens.auth.login.LoginScreen
 import com.edu.diettrack.presentation.ui.screens.auth.signin.SignInScreen
 import com.edu.diettrack.presentation.ui.screens.home.HomeScreen
+import com.edu.diettrack.presentation.ui.screens.onboarding.OnboardingScreen
 
 @Composable
 fun AppNavigation(
@@ -100,6 +101,14 @@ fun NavGraphBuilder.mainGraph(
                 HomeScreen(
                     modifier = modifier,
                     onLogout = onLogout
+                )
+            }
+        }
+
+        composable<Onboarding> {
+            OnboardingScaffold { modifier ->
+                OnboardingScreen(
+                    modifier = modifier,
                 )
             }
         }
