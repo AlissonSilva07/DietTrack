@@ -26,7 +26,7 @@ import com.edu.diettrack.presentation.components.FadeInItem
 import com.edu.diettrack.presentation.components.IconBg
 
 @Composable
-fun WelcomeStep(modifier: Modifier = Modifier) {
+fun OnboardingWelcomeStep(modifier: Modifier = Modifier) {
     val isDarkTheme = isSystemInDarkTheme()
     val arrowLogo = if (isDarkTheme) R.drawable.arrow_light else R.drawable.arrow_light
 

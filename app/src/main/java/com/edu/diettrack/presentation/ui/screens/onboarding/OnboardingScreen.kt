@@ -99,42 +99,6 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun OnboardingFinalStep(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        FadeInItem(delay = 1000L) {
-            Text(
-                text = "Obrigado!",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-        }
-        Spacer(Modifier.height(16.dp))
-        FadeInItem(delay = 1500L) {
-            Text(
-                text = "Aproveite seu app",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-        }
-        Spacer(Modifier.height(16.dp))
-        FadeInItem(delay = 2000L) {
-            Image(
-                painter = painterResource(R.drawable.logo_color),
-                contentDescription = null,
-                modifier = Modifier.width(240.dp)
-            )
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun OnboardingScreenPreview() {
