@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.edu.diettrack.presentation.components.AppButton
 import com.edu.diettrack.presentation.components.ButtonVariant
 import com.edu.diettrack.presentation.navigation.OnboardingScaffold
-import com.edu.diettrack.presentation.ui.screens.onboarding.steps.StepOne
+import com.edu.diettrack.presentation.ui.screens.onboarding.steps.PersonalInfoStep
 import com.edu.diettrack.presentation.ui.theme.AppTheme
 
 @Composable
@@ -50,7 +50,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 )
             }
         }
-        StepOne(
+        PersonalInfoStep(
             modifier = Modifier.weight(1f)
         )
         Row(
@@ -71,7 +71,6 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
         }
     }
 }
-
 
 @Preview
 @Composable

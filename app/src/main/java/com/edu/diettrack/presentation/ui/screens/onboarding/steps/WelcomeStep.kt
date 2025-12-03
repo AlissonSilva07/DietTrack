@@ -20,12 +20,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.edu.diettrack.R
 import com.edu.diettrack.presentation.components.FadeInItem
 import com.edu.diettrack.presentation.components.IconBg
 
 @Composable
-fun StepOne(modifier: Modifier = Modifier) {
+fun WelcomeStep(modifier: Modifier = Modifier) {
     val isDarkTheme = isSystemInDarkTheme()
     val arrowLogo = if (isDarkTheme) R.drawable.arrow_light else R.drawable.arrow_light
 
@@ -75,9 +76,24 @@ fun StepOne(modifier: Modifier = Modifier) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IconBg("🙋🏻‍♀️")
-                        IconBg("🥦")
-                        IconBg("🥤")
+                        IconBg(content = {
+                            Text(
+                                text = "🙋🏻‍♀️",
+                                fontSize = 32.sp
+                            )
+                        })
+                        IconBg(content = {
+                            Text(
+                                text = "🥦",
+                                fontSize = 32.sp
+                            )
+                        })
+                        IconBg(content = {
+                            Text(
+                                text = "🥤",
+                                fontSize = 32.sp
+                            )
+                        })
                     }
                 }
             }

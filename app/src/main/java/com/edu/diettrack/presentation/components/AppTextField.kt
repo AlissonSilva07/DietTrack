@@ -40,7 +40,7 @@ fun AppTextField(
     label: String,
     state: TextFieldState,
     placeholder: String,
-    icon: Int,
+    icon: Int?,
     modifier: Modifier = Modifier,
     errorText: String? = null,
 ) {
@@ -101,11 +101,13 @@ fun AppTextField(
                         .padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        painter = painterResource(icon),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
+                    icon?.let {
+                        Icon(
+                            painter = painterResource(icon),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.secondary
+                        )
+                    }
                     Spacer(Modifier.width(8.dp))
 
                     Box(
