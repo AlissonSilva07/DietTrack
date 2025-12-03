@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,6 +31,13 @@ import androidx.compose.ui.unit.dp
 import com.edu.diettrack.R
 import com.edu.diettrack.presentation.ui.theme.AppTheme
 
+enum class AppStepperUnit {
+    CM,
+    ML,
+    KG
+}
+
+
 @Composable
 fun AppStepper(
     modifier: Modifier = Modifier,
@@ -37,10 +46,18 @@ fun AppStepper(
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
     min: Int = 0,
-    max: Int = 2
+    max: Int = 2,
+    unit: AppStepperUnit? = null
 ) {
     val isDecrementEnabled = currentStep > min
     val isIncrementEnabled = currentStep < max
+
+    val unit = when (unit) {
+        AppStepperUnit.CM -> "cm"
+        AppStepperUnit.ML -> "ml"
+        AppStepperUnit.KG -> "kg"
+        else -> null
+    }
 
     Column(
         modifier = modifier,
@@ -74,14 +91,27 @@ fun AppStepper(
                     contentDescription = null
                 )
             }
-            Text(
-                text = "$currentStep",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "$currentStep",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Bold,
+                )
+                unit?.let {
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = unit,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
             IconButton(
                 onClick = {
                     if (isIncrementEnabled) onIncrement()
@@ -119,7 +149,8 @@ private fun AppStepperPreview() {
                 onIncrement = {},
                 onDecrement = {},
                 min = 0,
-                max = 20
+                max = 20,
+                unit = AppStepperUnit.CM
             )
         }
         
@@ -144,7 +175,8 @@ private fun AppStepperPreviewDark() {
                 onIncrement = {},
                 onDecrement = {},
                 min = 0,
-                max = 20
+                max = 20,
+                unit = AppStepperUnit.CM
             )
         }
 

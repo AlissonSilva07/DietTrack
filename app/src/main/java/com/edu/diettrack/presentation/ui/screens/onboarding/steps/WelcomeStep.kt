@@ -43,7 +43,7 @@ fun WelcomeStep(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            FadeInItem(delay = 300L) {
+            FadeInItem(delay = 500L) {
                 Text(
                     text = "Boas-vindas ao",
                     style = MaterialTheme.typography.titleLarge,
@@ -51,14 +51,14 @@ fun WelcomeStep(modifier: Modifier = Modifier) {
                     textAlign = TextAlign.Center
                 )
             }
-            FadeInItem(delay = 600L) {
+            FadeInItem(delay = 1000L) {
                 Image(
                     painter = painterResource(R.drawable.logo_color),
                     contentDescription = null,
                     modifier = Modifier.width(240.dp)
                 )
             }
-            FadeInItem(delay = 900L) {
+            FadeInItem(delay = 1500L) {
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -104,7 +104,7 @@ fun WelcomeStep(modifier: Modifier = Modifier) {
                 .fillMaxWidth(),
             contentAlignment = Alignment.BottomEnd
         ) {
-            FadeInItem(delay = 1200L) {
+            FadeInItem(delay = 2000L) {
                 Image(
                     painter = painterResource(arrowLogo),
                     contentDescription = null,
