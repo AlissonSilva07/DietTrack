@@ -24,7 +24,6 @@ fun OnboardingGoalsStep(modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(horizontal = 16.dp)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(

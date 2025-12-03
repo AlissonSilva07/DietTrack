@@ -88,9 +88,8 @@ fun AppButton(
         } else {
             if (icon != null) {
                 icon()
+                Spacer(modifier = Modifier.width(8.dp))
             }
-            Spacer(modifier = Modifier.width(8.dp))
-
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,

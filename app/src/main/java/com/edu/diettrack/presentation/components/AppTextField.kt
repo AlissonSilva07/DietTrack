@@ -107,9 +107,8 @@ fun AppTextField(
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.secondary
                         )
+                        Spacer(Modifier.width(8.dp))
                     }
-                    Spacer(Modifier.width(8.dp))
-
                     Box(
                         modifier = Modifier.fillMaxWidth()
                     ) {
