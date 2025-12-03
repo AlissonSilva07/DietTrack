@@ -94,7 +94,7 @@ fun NavGraphBuilder.authGraph(
 fun NavGraphBuilder.mainGraph(
     onLogout: () -> Unit
 ) {
-    navigation<MainRoutes>(startDestination = Home) {
+    navigation<MainRoutes>(startDestination = Onboarding) {
 
         composable<Home> {
             MainScaffold { modifier ->

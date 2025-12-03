@@ -17,25 +17,37 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: OnboardingScreenEvent) {
         when (event) {
             OnboardingScreenEvent.OnFinish -> _state.update { it.copy(isFinished = true) }
-            OnboardingScreenEvent.OnNextStep -> increaseStep()
-            OnboardingScreenEvent.OnPreviousStep -> decreaseStep()
+            OnboardingScreenEvent.OnNextStep -> {
+                _state.update{
+                    val newIndex = increment(it.currentStepIndex, it.steps.size - 1)
+                    it.copy(currentStepIndex = newIndex)
+                }
+            }
+            OnboardingScreenEvent.OnPreviousStep -> {
+                _state.update {
+                    it.copy(currentStepIndex = decrement(it.currentStepIndex))
+                }
+            }
+            is OnboardingScreenEvent.OnChangeGender -> _state.update { it.copy(gender = event.gender) }
+            OnboardingScreenEvent.OnDecrementAge -> {
+                _state.update {
+                    it.copy(age = decrement(it.age))
+                }
+            }
+            OnboardingScreenEvent.OnIncrementAge -> {
+                _state.update {
+                    it.copy(age = increment(it.age, 130))
+                }
+            }
+            OnboardingScreenEvent.OnDismissModal -> _state.update { it.copy(isModalOpen = false) }
+            OnboardingScreenEvent.OnOpenModal -> _state.update { it.copy(isModalOpen = true) }
         }
     }
 
-    private fun increaseStep() {
-        val current = _state.value.currentStepIndex
-        val lastIndex = _state.value.steps.size - 1
+    fun increment(value: Int, max: Int): Int =
+        if (value < max) value + 1 else value
 
-        if (current >= lastIndex) return
+    fun decrement(value: Int, min: Int = 0): Int =
+        if (value > min) value - 1 else value
 
-        _state.update { it.copy(currentStepIndex = current + 1) }
-    }
-
-    private fun decreaseStep() {
-        val current = _state.value.currentStepIndex
-
-        if (current == 0) return
-
-        _state.update { it.copy(currentStepIndex = current - 1) }
-    }
 }

@@ -9,12 +9,11 @@ import androidx.compose.ui.unit.sp
 import com.edu.diettrack.R
 
 val Inter = FontFamily(
-    Font(R.font.inter_variable, weight = FontWeight.Normal),
-        Font(R.font.inter_variable, weight = FontWeight.Bold)
+    Font(R.font.inter_variable)
 )
 
 val MomoTrust = FontFamily(
-    Font(R.font.momo_regular, weight = FontWeight.Bold)
+    Font(R.font.momo_regular)
 )
 
 val AppTypography = Typography(
@@ -30,12 +29,10 @@ val AppTypography = Typography(
     ),
     bodyLarge = TextStyle(
         fontFamily = Inter,
-        fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
     bodySmall = TextStyle(
         fontFamily = Inter,
-        fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     ),
 )

@@ -1,13 +1,17 @@
 package com.edu.diettrack.presentation.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -59,30 +63,34 @@ fun AppSelector(
                 )
             }
         }
-        Row(
-            modifier = Modifier
-                .background(
-                    MaterialTheme.colorScheme.surface,
-                    RoundedCornerShape(8.dp)
-                )
-                .border(
-                    width = 1.dp,
-                    color = borderColor,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(8.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(
+                width = 1.dp,
+                color = borderColor
+            ),
+            onClick = onClick
         ) {
-            Text(
-                text = selectedValue ?: "Selecione um gênero",
-                color = if (selectedValue.isNullOrBlank()) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onBackground
-            )
-            Icon(
-                painter = painterResource(R.drawable.unfold_more_24px),
-                contentDescription = null
-            )
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = selectedValue ?: "Selecione um gênero",
+                    color = if (selectedValue.isNullOrBlank()) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onBackground
+                )
+                Icon(
+                    painter = painterResource(R.drawable.unfold_more_24px),
+                    contentDescription = null
+                )
+            }
         }
+
     }
 }

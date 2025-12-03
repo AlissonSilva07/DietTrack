@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.edu.diettrack.presentation.ui.screens.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
@@ -15,8 +17,11 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -33,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.edu.diettrack.R
 import com.edu.diettrack.presentation.components.AppButton
+import com.edu.diettrack.presentation.components.AppModalPicker
 import com.edu.diettrack.presentation.components.ButtonVariant
 import com.edu.diettrack.presentation.components.PagerIndicator
 import com.edu.diettrack.presentation.navigation.OnboardingScaffold
@@ -42,7 +48,7 @@ import com.edu.diettrack.presentation.ui.screens.onboarding.steps.OnboardingPers
 import com.edu.diettrack.presentation.ui.screens.onboarding.steps.OnboardingWelcomeStep
 import com.edu.diettrack.presentation.ui.theme.AppTheme
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
@@ -118,13 +124,17 @@ fun OnBoarding(
         }
         HorizontalPager(
             state = pagerState,
+            userScrollEnabled = false,
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
         ) { page ->
             when (page) {
                 0 -> OnboardingWelcomeStep()
-                1 -> OnboardingPersonalInfoStep()
+                1 -> OnboardingPersonalInfoStep(
+                    event = event,
+                    state = state
+                )
                 2 -> OnboardingGoalsStep()
                 3 -> OnboardingFinalStep()
             }
@@ -182,6 +192,27 @@ fun OnBoarding(
                     icon = null
                 )
             }
+        }
+    }
+
+    if (state.isModalOpen) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                event(OnboardingScreenEvent.OnDismissModal)
+            },
+            containerColor = MaterialTheme.colorScheme.background
+        ) {
+            AppModalPicker(
+                label = "Escolha um gênero",
+                onDismiss = {
+                    event(OnboardingScreenEvent.OnDismissModal)
+                },
+                options = state.genderList,
+                selectedOption = state.gender,
+                onOptionSelected = { gender ->
+                    event(OnboardingScreenEvent.OnChangeGender(gender))
+                }
+            )
         }
     }
 }

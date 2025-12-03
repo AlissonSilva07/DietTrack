@@ -4,4 +4,11 @@ sealed class OnboardingScreenEvent {
     object OnPreviousStep : OnboardingScreenEvent()
     object OnNextStep : OnboardingScreenEvent()
     object OnFinish : OnboardingScreenEvent()
+    object OnDismissModal : OnboardingScreenEvent()
+    object OnOpenModal : OnboardingScreenEvent()
+
+    //OnboardingPersonalInfo
+    data class OnChangeGender(val gender: String) : OnboardingScreenEvent()
+    object OnIncrementAge : OnboardingScreenEvent()
+    object OnDecrementAge : OnboardingScreenEvent()
 }
