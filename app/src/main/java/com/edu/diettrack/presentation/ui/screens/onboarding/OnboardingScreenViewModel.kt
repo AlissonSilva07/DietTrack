@@ -16,7 +16,9 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
 
     fun onEvent(event: OnboardingScreenEvent) {
         when (event) {
-            OnboardingScreenEvent.OnFinish -> _state.update { it.copy(isFinished = true) }
+            OnboardingScreenEvent.OnFinish ->
+                _state.update { it.copy(isFinished = true) }
+
             OnboardingScreenEvent.OnNextStep -> {
                 if (state.value.currentStepIndex == 1 && !validateNameAndGender()) return
 
@@ -26,64 +28,50 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
                 }
             }
 
-            OnboardingScreenEvent.OnPreviousStep -> {
-                _state.update {
-                    it.copy(currentStepIndex = decrement(it.currentStepIndex))
-                }
-            }
+            OnboardingScreenEvent.OnPreviousStep ->
+                _state.update { it.copy(currentStepIndex = decrement(it.currentStepIndex)) }
 
-            is OnboardingScreenEvent.OnChangeGender -> _state.update { it.copy(gender = event.gender) }
-            OnboardingScreenEvent.OnDecrementAge -> {
-                _state.update {
-                    it.copy(age = decrement(it.age))
-                }
-            }
+            is OnboardingScreenEvent.OnChangeGender ->
+                _state.update { it.copy(gender = event.gender) }
 
-            OnboardingScreenEvent.OnIncrementAge -> {
-                _state.update {
-                    it.copy(age = increment(it.age, 130))
-                }
-            }
+            OnboardingScreenEvent.OnDecrementAge ->
+                _state.update { it.copy(age = decrement(it.age)) }
 
-            OnboardingScreenEvent.OnDismissModal -> _state.update { it.copy(isModalOpen = false) }
-            OnboardingScreenEvent.OnOpenModal -> _state.update { it.copy(isModalOpen = true) }
-            is OnboardingScreenEvent.OnProfilePictureChange -> _state.update {
-                it.copy(
-                    profilePicture = event.image
-                )
-            }
+            OnboardingScreenEvent.OnIncrementAge ->
+                _state.update { it.copy(age = increment(it.age, 130)) }
 
-            OnboardingScreenEvent.OnDecrementCurrentWeight -> _state.update {
-                it.copy(currentWeight = decrement(it.currentWeight))
-            }
+            OnboardingScreenEvent.OnDismissModal ->
+                _state.update { it.copy(isModalOpen = false) }
 
-            OnboardingScreenEvent.OnDecrementHeight -> _state.update {
-                it.copy(height = decrement(it.height))
-            }
+            OnboardingScreenEvent.OnOpenModal ->
+                _state.update { it.copy(isModalOpen = true) }
 
-            OnboardingScreenEvent.OnDecrementIdealWeight -> _state.update {
-                it.copy(idealWeight = decrement(it.idealWeight))
-            }
+            is OnboardingScreenEvent.OnProfilePictureChange ->
+                _state.update { it.copy(profilePicture = event.image) }
 
-            OnboardingScreenEvent.OnDecrementWaterGoal -> _state.update {
-                it.copy(waterGoal = decrement(it.waterGoal))
-            }
+            OnboardingScreenEvent.OnDecrementCurrentWeight ->
+                _state.update { it.copy(currentWeight = decrement(it.currentWeight)) }
 
-            OnboardingScreenEvent.OnIncrementCurrentWeight -> _state.update {
-                it.copy(currentWeight = increment(it.currentWeight, 500))
-            }
+            OnboardingScreenEvent.OnDecrementHeight ->
+                _state.update { it.copy(height = decrement(it.height)) }
 
-            OnboardingScreenEvent.OnIncrementHeight -> _state.update {
-                it.copy(height = increment(it.height, 300))
-            }
+            OnboardingScreenEvent.OnDecrementIdealWeight ->
+                _state.update { it.copy(idealWeight = decrement(it.idealWeight)) }
 
-            OnboardingScreenEvent.OnIncrementIdealWeight -> _state.update {
-                it.copy(idealWeight = increment(it.idealWeight, 500))
-            }
+            OnboardingScreenEvent.OnDecrementWaterGoal ->
+                _state.update { it.copy(waterGoal = decrementByStep(it.waterGoal, 0)) }
 
-            OnboardingScreenEvent.OnIncrementWaterGoal -> _state.update {
-                it.copy(waterGoal = increment(it.waterGoal, 8000))
-            }
+            OnboardingScreenEvent.OnIncrementCurrentWeight ->
+                _state.update { it.copy(currentWeight = increment(it.currentWeight, 500)) }
+
+            OnboardingScreenEvent.OnIncrementHeight ->
+                _state.update { it.copy(height = increment(it.height, 300)) }
+
+            OnboardingScreenEvent.OnIncrementIdealWeight ->
+                _state.update { it.copy(idealWeight = increment(it.idealWeight, 500)) }
+
+            OnboardingScreenEvent.OnIncrementWaterGoal ->
+                _state.update { it.copy(waterGoal = incrementByStep(it.waterGoal, 8000)) }
         }
     }
 
@@ -117,4 +105,10 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
     fun decrement(value: Int, min: Int = 0): Int =
         if (value > min) value - 1 else value
 
+    fun incrementByStep(value: Int, max: Int, step: Int = 500): Int =
+        if (value < max) value + step else value
+
+    fun decrementByStep(value: Int, min: Int, step: Int = 500): Int =
+        if (value > min) value - step else value
 }
+
