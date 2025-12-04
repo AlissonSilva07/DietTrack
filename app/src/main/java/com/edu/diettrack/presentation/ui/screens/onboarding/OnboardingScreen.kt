@@ -3,7 +3,6 @@
 package com.edu.diettrack.presentation.ui.screens.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -135,8 +133,15 @@ fun OnBoarding(
                     event = event,
                     state = state
                 )
-                2 -> OnboardingGoalsStep()
-                3 -> OnboardingFinalStep()
+
+                2 -> OnboardingGoalsStep(
+                    event = event,
+                    state = state
+                )
+
+                3 -> OnboardingFinalStep(
+                    state = state
+                )
             }
         }
         AnimatedVisibility(

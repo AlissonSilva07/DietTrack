@@ -110,7 +110,7 @@ fun OnboardingWelcomeStep(modifier: Modifier = Modifier) {
                 Image(
                     painter = painterResource(arrowLogo),
                     contentDescription = null,
-                    modifier = Modifier.size(142.dp)
+                    modifier = Modifier.size(124.dp)
                 )
             }
         }

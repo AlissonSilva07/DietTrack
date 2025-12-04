@@ -18,4 +18,10 @@ data class OnboardingScreenState (
     val gender: String? = null,
     val genderError: String? = null,
     val age: Int = 18,
+
+    //OnboardingGoals
+    val height: Int = 170,
+    val currentWeight: Int = 80,
+    val idealWeight: Int = 85,
+    val waterGoal: Int = 4000
 )

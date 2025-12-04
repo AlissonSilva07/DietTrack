@@ -34,7 +34,7 @@ import java.io.InputStream
 fun AvatarField(
     modifier: Modifier = Modifier,
     base64Image: String?,
-    onImagePicked: (String) -> Unit
+    onImagePicked: (image: String) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -64,13 +64,13 @@ fun AvatarField(
         contentAlignment = Alignment.BottomEnd
     ) {
         IconBg(
-            bgSize = 143.dp,
+            bgSize = 142.dp,
             content = {
                 if (decodedImageBytes != null) {
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(100))
-                            .size(92.dp),
+                            .size(88.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         AsyncImage(

@@ -12,14 +12,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.edu.diettrack.presentation.components.AppStepper
 import com.edu.diettrack.presentation.components.AppStepperUnit
 import com.edu.diettrack.presentation.components.IconBg
+import com.edu.diettrack.presentation.ui.screens.onboarding.OnboardingScreenEvent
+import com.edu.diettrack.presentation.ui.screens.onboarding.OnboardingScreenState
+import com.edu.diettrack.presentation.ui.theme.AppTheme
 
 @Composable
-fun OnboardingGoalsStep(modifier: Modifier = Modifier) {
+fun OnboardingGoalsStep(
+    modifier: Modifier = Modifier,
+    state: OnboardingScreenState,
+    event: (OnboardingScreenEvent) -> Unit
+) {
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
@@ -49,9 +57,13 @@ fun OnboardingGoalsStep(modifier: Modifier = Modifier) {
             )
             AppStepper(
                 label = "Qual a sua altura atual?",
-                currentStep = 160,
-                onIncrement = {},
-                onDecrement = {},
+                currentStep = state.height,
+                onIncrement = {
+                    event(OnboardingScreenEvent.OnIncrementHeight)
+                },
+                onDecrement = {
+                    event(OnboardingScreenEvent.OnDecrementHeight)
+                },
                 min = 90,
                 max = 300,
                 unit = AppStepperUnit.CM,
@@ -59,34 +71,74 @@ fun OnboardingGoalsStep(modifier: Modifier = Modifier) {
             )
             AppStepper(
                 label = "Qual o seu peso atual?",
-                currentStep = 75,
-                onIncrement = {},
-                onDecrement = {},
-                min = 30,
+                currentStep = state.currentWeight,
+                onIncrement = {
+                    event(OnboardingScreenEvent.OnIncrementCurrentWeight)
+                },
+                onDecrement = {
+                    event(OnboardingScreenEvent.OnDecrementCurrentWeight)
+                },
+                min = 0,
                 max = 500,
                 unit = AppStepperUnit.KG,
                 modifier = Modifier.fillMaxWidth()
             )
             AppStepper(
                 label = "Qual o seu peso ideal?",
-                currentStep = 85,
-                onIncrement = {},
-                onDecrement = {},
-                min = 30,
+                currentStep = state.idealWeight,
+                onIncrement = {
+                    event(OnboardingScreenEvent.OnIncrementIdealWeight)
+                },
+                onDecrement = {
+                    event(OnboardingScreenEvent.OnDecrementIdealWeight)
+                },
+                min = 0,
                 max = 300,
                 unit = AppStepperUnit.KG,
                 modifier = Modifier.fillMaxWidth()
             )
             AppStepper(
                 label = "Quanto de água você pretende beber por dia?",
-                currentStep = 4000,
-                onIncrement = {},
-                onDecrement = {},
+                currentStep = state.waterGoal,
+                onIncrement = {
+                    event(OnboardingScreenEvent.OnIncrementWaterGoal)
+                },
+                onDecrement = {
+                    event(OnboardingScreenEvent.OnDecrementWaterGoal)
+                },
                 min = 0,
-                max = 190,
+                max = 8000,
                 unit = AppStepperUnit.ML,
                 modifier = Modifier.fillMaxWidth()
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun OnboardingGoalsStepPreview() {
+    AppTheme(
+        darkTheme = false,
+        dynamicColor = false
+    ) {
+        OnboardingGoalsStep(
+            state = OnboardingScreenState(),
+            event = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun OnboardingGoalsStepPreviewDark() {
+    AppTheme(
+        darkTheme = true,
+        dynamicColor = false
+    ) {
+        OnboardingGoalsStep(
+            state = OnboardingScreenState(),
+            event = {}
+        )
     }
 }

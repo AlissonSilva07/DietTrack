@@ -42,8 +42,8 @@ fun OnboardingPersonalInfoStep(
         ) {
             AvatarField(
                 base64Image = state.profilePicture,
-                onImagePicked = {
-                    event(OnboardingScreenEvent.OnImagePicked(it))
+                onImagePicked = { image ->
+                    event(OnboardingScreenEvent.OnProfilePictureChange(image))
                 }
             )
             Text(
