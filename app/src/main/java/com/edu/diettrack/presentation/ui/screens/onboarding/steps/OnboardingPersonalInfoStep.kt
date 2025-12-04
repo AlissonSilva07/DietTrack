@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.edu.diettrack.R
 import com.edu.diettrack.presentation.components.AppSelector
 import com.edu.diettrack.presentation.components.AppStepper
 import com.edu.diettrack.presentation.components.AppTextField
@@ -56,14 +57,14 @@ fun OnboardingPersonalInfoStep(
                 label = "Qual o seu nome?",
                 state = state.name,
                 placeholder = "Seu nome de preferência",
-                icon = null,
-                errorText = null,
+                icon = R.drawable.person_24px,
+                errorText = state.nameError,
                 modifier = Modifier.fillMaxWidth()
             )
             AppSelector(
                 label = "Qual o seu gênero?",
                 selectedValue = state.gender,
-                error = null,
+                error = state.genderError,
                 onClick = {
                     event(OnboardingScreenEvent.OnOpenModal)
                 },

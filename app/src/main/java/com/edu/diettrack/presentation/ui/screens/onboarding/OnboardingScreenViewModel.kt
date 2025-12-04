@@ -18,9 +18,11 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
         when (event) {
             OnboardingScreenEvent.OnFinish -> _state.update { it.copy(isFinished = true) }
             OnboardingScreenEvent.OnNextStep -> {
+                if (state.value.currentStepIndex == 1 && !validateNameAndGender()) return
+
                 _state.update {
-                    val newIndex = increment(it.currentStepIndex, it.steps.size - 1)
-                    it.copy(currentStepIndex = newIndex)
+                    val next = increment(it.currentStepIndex, it.steps.size - 1)
+                    it.copy(currentStepIndex = next)
                 }
             }
 
@@ -78,6 +80,27 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
                 it.copy(waterGoal = increment(it.waterGoal, 8000))
             }
         }
+    }
+
+    private fun validateNameAndGender(): Boolean {
+        val current = _state.value
+
+        var isValid = true
+
+        if (current.name.text.isBlank()) {
+            _state.update { it.copy(nameError = "Campo obrigatório.") }
+            isValid = false
+        } else if (current.name.text.length < 3) {
+            _state.update { it.copy(nameError = "Mínimo de 3 caracteres.") }
+            isValid = false
+        }
+
+        if (current.gender == null) {
+            _state.update { it.copy(genderError = "Campo obrigatório.") }
+            isValid = false
+        }
+
+        return isValid
     }
 
     fun increment(value: Int, max: Int): Int =
