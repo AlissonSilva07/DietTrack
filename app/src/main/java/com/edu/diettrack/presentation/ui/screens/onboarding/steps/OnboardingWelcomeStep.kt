@@ -19,16 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.edu.diettrack.R
 import com.edu.diettrack.presentation.components.FadeInItem
 import com.edu.diettrack.presentation.components.IconBg
+import com.edu.diettrack.presentation.ui.theme.AppTheme
 
 @Composable
 fun OnboardingWelcomeStep(modifier: Modifier = Modifier) {
     val isDarkTheme = isSystemInDarkTheme()
-    val arrowLogo = if (isDarkTheme) R.drawable.arrow_light else R.drawable.arrow_light
+    val arrowLogo = if (isDarkTheme) R.drawable.arrow_light else R.drawable.arrow_dark
 
     Column(
         modifier = modifier
@@ -112,5 +114,27 @@ fun OnboardingWelcomeStep(modifier: Modifier = Modifier) {
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun OnboardingWelcomeStepPreview() {
+    AppTheme(
+        darkTheme = false,
+        dynamicColor = false
+    ) {
+        OnboardingWelcomeStep()
+    }
+}
+
+@Preview
+@Composable
+private fun OnboardingWelcomeStepPreviewDark() {
+    AppTheme(
+        darkTheme = true,
+        dynamicColor = false
+    ) {
+        OnboardingWelcomeStep()
     }
 }

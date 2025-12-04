@@ -40,7 +40,12 @@ fun OnboardingPersonalInfoStep(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AvatarField()
+            AvatarField(
+                base64Image = state.profilePicture,
+                onImagePicked = {
+                    event(OnboardingScreenEvent.OnImagePicked(it))
+                }
+            )
             Text(
                 text = "Conte-nos mais sobre você.",
                 style = MaterialTheme.typography.titleLarge,

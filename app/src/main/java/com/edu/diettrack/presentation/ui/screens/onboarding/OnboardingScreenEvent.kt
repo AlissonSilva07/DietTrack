@@ -8,6 +8,7 @@ sealed class OnboardingScreenEvent {
     object OnOpenModal : OnboardingScreenEvent()
 
     //OnboardingPersonalInfo
+    data class OnImagePicked(val image: String) : OnboardingScreenEvent()
     data class OnChangeGender(val gender: String) : OnboardingScreenEvent()
     object OnIncrementAge : OnboardingScreenEvent()
     object OnDecrementAge : OnboardingScreenEvent()

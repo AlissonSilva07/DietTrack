@@ -41,6 +41,7 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
             }
             OnboardingScreenEvent.OnDismissModal -> _state.update { it.copy(isModalOpen = false) }
             OnboardingScreenEvent.OnOpenModal -> _state.update { it.copy(isModalOpen = true) }
+            is OnboardingScreenEvent.OnImagePicked -> _state.update { it.copy(profilePicture = event.image) }
         }
     }
 

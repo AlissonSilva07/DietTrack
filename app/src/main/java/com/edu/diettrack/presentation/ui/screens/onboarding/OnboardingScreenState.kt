@@ -11,7 +11,7 @@ data class OnboardingScreenState (
     val isModalOpen: Boolean = false,
 
     //OnboardingPersonalInfo
-    val profilePicture: String = "",
+    val profilePicture: String? = null,
     val name: TextFieldState = TextFieldState(),
     val nameError: String? = null,
     val genderList: List<String> = listOf("Masculino", "Feminino", "Outro"),
