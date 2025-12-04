@@ -47,7 +47,12 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
 
             OnboardingScreenEvent.OnDismissModal -> _state.update { it.copy(isModalOpen = false) }
             OnboardingScreenEvent.OnOpenModal -> _state.update { it.copy(isModalOpen = true) }
-            is OnboardingScreenEvent.OnProfilePictureChange -> _state.update { it.copy(profilePicture = event.image) }
+            is OnboardingScreenEvent.OnProfilePictureChange -> _state.update {
+                it.copy(
+                    profilePicture = event.image
+                )
+            }
+
             OnboardingScreenEvent.OnDecrementCurrentWeight -> _state.update {
                 it.copy(currentWeight = decrement(it.currentWeight))
             }
@@ -84,7 +89,6 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
 
     private fun validateNameAndGender(): Boolean {
         val current = _state.value
-
         var isValid = true
 
         if (current.name.text.isBlank()) {
@@ -93,11 +97,15 @@ class OnboardingScreenViewModel @Inject constructor() : ViewModel() {
         } else if (current.name.text.length < 3) {
             _state.update { it.copy(nameError = "Mínimo de 3 caracteres.") }
             isValid = false
+        } else {
+            _state.update { it.copy(nameError = null) }
         }
 
         if (current.gender == null) {
             _state.update { it.copy(genderError = "Campo obrigatório.") }
             isValid = false
+        } else {
+            _state.update { it.copy(genderError = null) }
         }
 
         return isValid
