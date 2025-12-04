@@ -2,7 +2,7 @@ package com.edu.diettrack.di
 
 import com.edu.diettrack.data.local.AuthUserDao
 import com.edu.diettrack.data.repository.AuthRepositoryImpl
-import com.edu.diettrack.data.storage.AuthStorage
+import com.edu.diettrack.data.storage.UserStorage
 import com.edu.diettrack.data.utils.NetworkChecker
 import com.edu.diettrack.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -20,9 +20,9 @@ object AuthModule {
         auth: FirebaseAuth,
         firestore: FirebaseFirestore,
         userDao: AuthUserDao,
-        authStorage: AuthStorage,
+        userStorage: UserStorage,
         networkChecker: NetworkChecker
     ): AuthRepository = AuthRepositoryImpl(
-        auth, firestore, userDao, authStorage, networkChecker
+        auth, firestore, userDao, userStorage, networkChecker
     )
 }

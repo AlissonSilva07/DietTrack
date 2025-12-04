@@ -11,4 +11,6 @@ interface AuthRepository {
     suspend fun signUp(email: String, password: String): Resource<FirebaseUser?>
     suspend fun getCurrentUser(): AuthUser?
     suspend fun signOut()
+
+    suspend fun fetchOnboardingStatus(uid: String): Boolean
 }

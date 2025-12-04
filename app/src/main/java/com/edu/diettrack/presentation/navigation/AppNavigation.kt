@@ -15,13 +15,16 @@ import com.edu.diettrack.presentation.ui.screens.auth.login.LoginScreen
 import com.edu.diettrack.presentation.ui.screens.auth.signin.SignInScreen
 import com.edu.diettrack.presentation.ui.screens.home.HomeScreen
 import com.edu.diettrack.presentation.ui.screens.onboarding.OnboardingScreen
+import com.edu.diettrack.presentation.ui.viewmodels.AppStartViewModel
 
 @Composable
 fun AppNavigation(
-    authViewModel: AuthViewModel = hiltViewModel()
+    authViewModel: AuthViewModel = hiltViewModel(),
+    appStartViewModel: AppStartViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
     val authState = authViewModel.state.collectAsState()
+    val onboarded = appStartViewModel.hasOnboarded.collectAsState(initial = false)
 
     val startDestination = when (authState.value) {
         is AuthState.Loading -> AuthRoutes
@@ -45,6 +48,7 @@ fun AppNavigation(
         )
 
         mainGraph(
+            start = if (onboarded.value) Home else Onboarding,
             onLogout = {
                 authViewModel.logout()
 
@@ -92,9 +96,10 @@ fun NavGraphBuilder.authGraph(
 
 
 fun NavGraphBuilder.mainGraph(
+    start: Any,
     onLogout: () -> Unit
 ) {
-    navigation<MainRoutes>(startDestination = Onboarding) {
+    navigation<MainRoutes>(startDestination = start) {
 
         composable<Home> {
             MainScaffold { modifier ->

@@ -4,7 +4,7 @@ import android.util.Log
 import com.edu.diettrack.data.local.AuthUserDao
 import com.edu.diettrack.data.mapper.toDomain
 import com.edu.diettrack.data.mapper.toEntity
-import com.edu.diettrack.data.storage.AuthStorage
+import com.edu.diettrack.data.storage.UserStorage
 import com.edu.diettrack.data.utils.NetworkChecker
 import com.edu.diettrack.data.utils.Resource
 import com.edu.diettrack.domain.model.AuthUser
@@ -25,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     private val authUserDao: AuthUserDao,
-    private val authStorage: AuthStorage,
+    private val userStorage: UserStorage,
     private val networkChecker: NetworkChecker
 ) : AuthRepository {
     override val authState = MutableStateFlow<FirebaseUser?>(null)
@@ -80,7 +80,10 @@ class AuthRepositoryImpl @Inject constructor(
             val user = result.user ?: return Resource.Error("Credenciais inválidas.")
 
             authUserDao.saveUser(user.toEntity())
-            authStorage.saveUid(user.uid)
+            userStorage.saveUid(user.uid)
+
+            val hasFinished = fetchOnboardingStatus(user.uid)
+            userStorage.setOnboarded(hasFinished)
 
             Resource.Success(user)
 
@@ -108,6 +111,19 @@ class AuthRepositoryImpl @Inject constructor(
             }
 
             val result = auth.createUserWithEmailAndPassword(email, password).await()
+            val user = result.user ?: return Resource.Error("Erro ao criar usuário")
+
+            val userSettingsDoc = mapOf(
+                "has_finished_onboarding" to false,
+                "water_goal" to null,
+                "weight_goal" to null
+            )
+
+            firestore.collection("user_settings")
+                .document(user.uid)
+                .set(userSettingsDoc)
+                .await()
+
             return Resource.Success(result.user)
         } catch (e: Exception) {
             Resource.Error("Algo inesperado aconteceu:", e)
@@ -116,7 +132,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentUser(): AuthUser? {
-        val uid = authStorage.uidFlow.first()
+        val uid = userStorage.uidFlow.first()
 
         val local = authUserDao.getUser()
         if (local != null) return local.toDomain()
@@ -140,6 +156,19 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signOut() {
         auth.signOut()
         authUserDao.clear()
-        authStorage.clearUid()
+        userStorage.clearUid()
+    }
+
+    override suspend fun fetchOnboardingStatus(uid: String): Boolean {
+        return try {
+            val doc = firestore.collection("user_settings")
+                .document(uid)
+                .get()
+                .await()
+
+            doc.getBoolean("has_finished_onboarding") ?: false
+        } catch (e: Exception) {
+            false
+        }
     }
 }
