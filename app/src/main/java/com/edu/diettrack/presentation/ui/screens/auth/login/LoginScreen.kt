@@ -47,20 +47,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    onLogin: () -> Unit,
     onNavigateToSignUp: () -> Unit,
-    onLoginSuccess: () -> Unit,
     snackbarHostState: SnackbarHostState,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
     val loginState by viewModel.loginState.collectAsState()
     val scope = rememberCoroutineScope()
-
-    LaunchedEffect(state) {
-        if (state is AuthState.Success) {
-            onLoginSuccess()
-        }
-    }
 
     LaunchedEffect(loginState.snackbarMessage) {
         loginState.snackbarMessage?.let { message ->
@@ -183,7 +176,9 @@ fun Login(
             color = MaterialTheme.colorScheme.onBackground,
             text = cadastroString,
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable(onClick = onNavigateToSignUp)
+            modifier = Modifier.clickable {
+                onNavigateToSignUp()
+            }
         )
     }
 }

@@ -38,7 +38,7 @@ import com.edu.diettrack.presentation.components.AppButton
 import com.edu.diettrack.presentation.components.AppPasswordField
 import com.edu.diettrack.presentation.components.AppTextField
 import com.edu.diettrack.presentation.components.ButtonVariant
-import com.edu.diettrack.presentation.navigation.AuthScaffold
+import com.edu.diettrack.presentation.components.AuthScaffold
 import com.edu.diettrack.presentation.ui.screens.auth.AuthState
 import com.edu.diettrack.presentation.ui.screens.auth.AuthViewModel
 import com.edu.diettrack.presentation.ui.theme.AppTheme
@@ -179,7 +179,9 @@ fun SignIn(
             color = MaterialTheme.colorScheme.onBackground,
             text = loginString,
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable(onClick = onNavigateToLogin)
+            modifier = Modifier.clickable{
+                onNavigateToLogin()
+            }
         )
     }
 }

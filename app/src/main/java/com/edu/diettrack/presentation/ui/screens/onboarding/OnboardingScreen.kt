@@ -39,7 +39,7 @@ import com.edu.diettrack.presentation.components.AppButton
 import com.edu.diettrack.presentation.components.AppModalPicker
 import com.edu.diettrack.presentation.components.ButtonVariant
 import com.edu.diettrack.presentation.components.PagerIndicator
-import com.edu.diettrack.presentation.navigation.OnboardingScaffold
+import com.edu.diettrack.presentation.components.OnboardingScaffold
 import com.edu.diettrack.presentation.ui.screens.onboarding.steps.OnboardingFinalStep
 import com.edu.diettrack.presentation.ui.screens.onboarding.steps.OnboardingGoalsStep
 import com.edu.diettrack.presentation.ui.screens.onboarding.steps.OnboardingPersonalInfoStep

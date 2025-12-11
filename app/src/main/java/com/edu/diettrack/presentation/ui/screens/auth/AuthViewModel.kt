@@ -22,7 +22,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
-    private val _state = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
+    private val _state = MutableStateFlow<AuthState>(AuthState.Loading)
     val state: StateFlow<AuthState> = _state.asStateFlow()
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -40,7 +40,7 @@ class AuthViewModel @Inject constructor(
             authRepository.authState.collect { user ->
                 _state.value = when (user) {
                     null -> AuthState.Unauthenticated
-                    else -> AuthState.Success(user)
+                    else -> Success(user)
                 }
             }
         }

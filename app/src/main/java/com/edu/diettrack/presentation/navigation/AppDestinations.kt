@@ -1,24 +1,27 @@
 package com.edu.diettrack.presentation.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-object AuthRoutes
+sealed interface AppDestinations : NavKey {
+    @Serializable
+    data object Loading : AppDestinations, NavKey
 
-@Serializable
-object MainRoutes
+    @Serializable
+    data object Onboarding : AppDestinations, NavKey
 
-@Serializable
-object Loading
+    @Serializable
+    data object Auth : AppDestinations, NavKey {
+        @Serializable
+        data object Login : AppDestinations, NavKey
+        @Serializable
+        data object Register : AppDestinations, NavKey
+    }
 
-@Serializable
-object Login
-
-@Serializable
-object Signin
-
-@Serializable
-object Home
-
-@Serializable
-object Onboarding
+    @Serializable
+    data object Main : AppDestinations, NavKey {
+        @Serializable
+        data object Home : AppDestinations, NavKey
+    }
+}
